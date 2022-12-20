@@ -1,25 +1,32 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
 import { LoggerModule } from 'nestjs-pino';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { VaccineModule } from './models/vaccine/vaccine.module';
+
 @Module({
   imports: [
+    VaccineModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: any) => ({
+      useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get('DB_HOST'),
         port: +configService.get('DB_PORT'),
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [],
+        schema: configService.get('DB_SCHEMA'),
+        // TODO: Manage this by migration
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
+        validation: true,
       }),
     }),
     LoggerModule.forRoot({
