@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
+import { Logger } from 'nestjs-pino';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 
 import * as cors from 'cors';
@@ -10,10 +10,12 @@ import { SWAGGER } from './constant/lang.constant';
 import { SWAGGER_URL, URL_PREFIX } from './constant/base.constant';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
   // configure cors
   app.use(cors());
+
+  app.useLogger(app.get(Logger));
 
   // Configure Swagger
   configureSwagger(app);
