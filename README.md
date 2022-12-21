@@ -5,8 +5,9 @@
  - [x] Containerize the application
  - [x] Add `docker-compose` service for running the application and the database
  - [x] Add `pico logger` to log all the requests
- - [ ] Setup the database connections
- - [ ] Add controller, service, entity and repository for `VaccineEntity`
+ - [x] Setup the database connections
+ - [x] Add controller, service, entity and repository for `VaccineEntity`
+ - [ ] Fix issue with the patch as it throws error since all fields are required.
  - [ ] Add controller, service, entity and repository for `UserEntity`
  - [ ] Add seeders and migration scripts
  - [ ] Implement the flow for JWT authentication
