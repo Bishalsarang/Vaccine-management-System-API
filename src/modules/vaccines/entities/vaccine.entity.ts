@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 import {
+  Min,
   IsEmail,
   IsNumber,
   IsBoolean,
@@ -23,6 +24,7 @@ export class Vaccine extends AuditEntity {
   description: string;
 
   @Column()
+  @Min(1)
   numberOfDoses: number;
 
   @Column({ default: false })

@@ -6,17 +6,26 @@ import {
   Param,
   Delete,
   Controller,
+  HttpStatus,
 } from '@nestjs/common';
 
+import {
+  ApiTags,
+  ApiParam,
+  ApiResponse,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+} from '@nestjs/swagger';
 import { Logger } from 'nestjs-pino';
 
 import { VaccineService } from './vaccines.service';
+import { Vaccine } from './entities/vaccine.entity';
 import { CreateVaccineDto } from './dto/create-vaccine.dto';
 import { UpdateVaccineDto } from './dto/update-vaccine.dto';
-
 /**
  * Controller for managing vaccines.
  */
+@ApiTags('Vaccines')
 @Controller('vaccines')
 export class VaccineController {
   constructor(
@@ -31,6 +40,7 @@ export class VaccineController {
    * @returns The created vaccine.
    */
   @Post()
+  @ApiCreatedResponse({ type: Vaccine })
   create(@Body() createVaccineDto: CreateVaccineDto) {
     return this.vaccineService.create(createVaccineDto);
   }
@@ -41,6 +51,7 @@ export class VaccineController {
    * @returns A list of vaccines.
    */
   @Get()
+  @ApiResponse({ status: HttpStatus.OK, type: [Vaccine] })
   findAll() {
     return this.vaccineService.findAll();
   }
@@ -52,6 +63,11 @@ export class VaccineController {
    * @returns The vaccine with the given ID.
    */
   @Get(':id')
+  @ApiNotFoundResponse({
+    description: "The vaccine doesn't exist",
+  })
+  @ApiResponse({ status: HttpStatus.OK, type: [Vaccine] })
+  @ApiParam({ name: 'id', type: Number })
   findOne(@Param('id') id: string) {
     return this.vaccineService.findById(+id);
   }
@@ -64,6 +80,8 @@ export class VaccineController {
    * @returns The updated vaccine.
    */
   @Patch(':id')
+  @ApiParam({ name: 'id', type: Number })
+  @ApiResponse({ status: HttpStatus.OK, type: Vaccine })
   update(@Param('id') id: string, @Body() updateVaccineDto: UpdateVaccineDto) {
     return this.vaccineService.update(+id, updateVaccineDto);
   }
@@ -75,6 +93,8 @@ export class VaccineController {
    * @returns The deleted vaccine.
    */
   @Delete(':id')
+  @ApiParam({ name: 'id', type: Number })
+  @ApiResponse({ status: HttpStatus.OK, type: Vaccine })
   remove(@Param('id') id: string) {
     return this.vaccineService.remove(+id);
   }
