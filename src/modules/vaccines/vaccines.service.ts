@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 
 import { Vaccine } from './entities/vaccine.entity';
 import { CreateVaccineDto } from './dto/create-vaccine.dto';
@@ -20,7 +20,7 @@ export class VaccineService {
    * @param createVaccineDto - The data for creating the vaccine.
    * @returns The created vaccine.
    */
-  async create(createVaccineDto: CreateVaccineDto): Promise<Vaccine> {
+  create(createVaccineDto: CreateVaccineDto): Promise<Vaccine> {
     return this.vaccineRepository.save(createVaccineDto);
   }
 
@@ -29,7 +29,7 @@ export class VaccineService {
    *
    * @returns A list of vaccines.
    */
-  async findAll(): Promise<Vaccine[]> {
+  findAll(): Promise<Vaccine[]> {
     return this.vaccineRepository.find();
   }
 
@@ -70,7 +70,7 @@ export class VaccineService {
    *
    * @param id - The ID of the vaccine to delete.
    */
-  async remove(id: number): Promise<void> {
-    await this.vaccineRepository.softDelete(id);
+  remove(id: number): Promise<UpdateResult> {
+    return this.vaccineRepository.softDelete(id);
   }
 }
