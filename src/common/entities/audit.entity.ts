@@ -27,10 +27,5 @@ export abstract class AuditEntity {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @BeforeInsert()
-  showMessage() {
-    console.log('test');
-  }
-
   // TODO: Set createdBy, updatedBy
 }
