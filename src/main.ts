@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { SecuritySchemeObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
 
 import * as cors from 'cors';
 
@@ -39,6 +40,14 @@ function configureSwagger(app: INestApplication) {
     .setDescription(SWAGGER.description)
     .setVersion(SWAGGER.version)
     .addTag(SWAGGER.title, SWAGGER.description)
+    .addBearerAuth(
+      {
+        type: 'http',
+        schema: 'Bearer',
+        bearerFormat: 'Token',
+      } as SecuritySchemeObject,
+      'Bearer',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
