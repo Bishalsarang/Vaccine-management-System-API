@@ -5,6 +5,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
   Controller,
   HttpStatus,
 } from '@nestjs/common';
@@ -15,18 +16,21 @@ import {
   ApiResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
-import { Logger } from 'nestjs-pino';
 
 import { VaccineService } from './vaccines.service';
 import { Vaccine } from './entities/vaccine.entity';
 import { CreateVaccineDto } from './dto/create-vaccine.dto';
 import { UpdateVaccineDto } from './dto/update-vaccine.dto';
+import { AuthGuard } from 'src/guard/auth/auth.guard';
 /**
  * Controller for managing vaccines.
  */
 @ApiTags('Vaccines')
 @Controller('vaccines')
+@UseGuards(AuthGuard)
+@ApiBearerAuth('Bearer')
 export class VaccineController {
   constructor(private readonly vaccineService: VaccineService) {}
 

@@ -9,13 +9,15 @@
  - [x] Add controller, service, entity and repository for `VaccineEntity`
  - [x] Write unit test for Vaccine Services
  - [ ] Fix issue with the patch /vaccines as it throws error since all fields are required.
- - [ ] Add controller, service, entity and repository for `UserEntity`
- - [ ] Implement login and signup flow with JWT authentication
+ - [x] Add controller, service, entity and repository for `UserEntity`
+ - [x] Implement login and signup flow with JWT authentication
+ - [x] Add auth guard to make the route private
  - [ ] Add seeders and migration scripts
+ - [ ] Add updatedBy, createdBy, deletedBy information in Vaccine
  - [ ] Implement authorization. Only allow admin for CRUD. But for normal user only allow to view
  - [ ] Ability to upload the vaccine image
  - [ ] Update the readme to run the development server, setup the database, run the application
  - [ ] Write unit test for utils
  - [ ] Write the test using the test databse
- - [ ] Refactoring and cleanup
+ - [ ] Refactoring and cleanup: constants, configs, duplicates
  - [ ] Host to free deployment service like heroku
