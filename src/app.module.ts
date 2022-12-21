@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { LoggerModule } from 'nestjs-pino';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
+import { AppService } from './app.service';
+import { AppController } from './app.controller';
+import { VaccinesModule } from './modules/vaccines/vaccines.module';
 
 @Module({
   imports: [
@@ -18,8 +20,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [],
+        schema: configService.get('DB_SCHEMA'),
+        // TODO: Manage this by migration
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
+        validation: true,
       }),
     }),
     LoggerModule.forRoot({
@@ -31,6 +36,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
             : undefined,
       },
     }),
+    VaccinesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
