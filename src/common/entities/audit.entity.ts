@@ -1,9 +1,4 @@
-import {
-  BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-} from 'typeorm';
+import { CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 
 /**
  * Represents an abstract audit entity with createdAt, updatedAt, and deletedAt fields.

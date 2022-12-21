@@ -21,7 +21,7 @@ export class Vaccine extends AuditEntity {
   name: string;
 
   @Column()
-  description: string;
+  description?: string;
 
   @Column()
   @Min(1)
@@ -29,7 +29,7 @@ export class Vaccine extends AuditEntity {
 
   @Column({ default: false })
   @IsBoolean()
-  isMandatory: boolean;
+  isMandatory?: boolean;
 
   @Column()
   @IsEmail()

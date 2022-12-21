@@ -51,7 +51,7 @@ export class CreateVaccineDto {
     description: 'The number of doses for the vaccine.',
   })
   @IsNumber()
-  numberOfDoses?: number;
+  numberOfDoses: number;
 
   @ApiPropertyOptional({
     default: false,
