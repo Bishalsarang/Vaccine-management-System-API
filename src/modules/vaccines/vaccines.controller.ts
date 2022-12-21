@@ -28,10 +28,7 @@ import { UpdateVaccineDto } from './dto/update-vaccine.dto';
 @ApiTags('Vaccines')
 @Controller('vaccines')
 export class VaccineController {
-  constructor(
-    private readonly vaccineService: VaccineService,
-    private readonly logger: Logger,
-  ) {}
+  constructor(private readonly vaccineService: VaccineService) {}
 
   /**
    * Creates a new vaccine.

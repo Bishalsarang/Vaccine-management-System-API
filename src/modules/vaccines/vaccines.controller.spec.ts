@@ -1,21 +1,31 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+
+import { Repository } from 'typeorm';
 
 import { VaccineService } from './vaccines.service';
 import { VaccineController } from './vaccines.controller';
+import { Vaccine } from './entities/vaccine.entity';
 
 describe('VaccinesController', () => {
-  let controller: VaccineController;
+  let vaccineController: VaccineController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [VaccineController],
-      providers: [VaccineService],
+      providers: [
+        VaccineService,
+        {
+          provide: getRepositoryToken(Vaccine),
+          useClass: Repository,
+        },
+      ],
     }).compile();
 
-    controller = module.get<VaccineController>(VaccineController);
+    vaccineController = module.get<VaccineController>(VaccineController);
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(vaccineController).toBeDefined();
   });
 });
