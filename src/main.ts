@@ -17,13 +17,13 @@ async function bootstrap() {
 
   app.useLogger(app.get(Logger));
 
+  app.setGlobalPrefix(URL_PREFIX);
+
   // Configure Swagger
   configureSwagger(app);
 
   // Enable the validation pipe
   app.useGlobalPipes(new ValidationPipe());
-
-  app.setGlobalPrefix(URL_PREFIX);
 
   await app.listen(3000);
 }
@@ -38,6 +38,7 @@ function configureSwagger(app: INestApplication) {
     .setTitle(SWAGGER.title)
     .setDescription(SWAGGER.description)
     .setVersion(SWAGGER.version)
+    .addTag(SWAGGER.title, SWAGGER.description)
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
