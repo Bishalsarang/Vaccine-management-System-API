@@ -8,10 +8,11 @@
  - [x] Setup the database connections
  - [x] Add controller, service, entity and repository for `VaccineEntity`
  - [x] Write unit test for Vaccine Services
- - [ ] Fix issue with the patch /vaccines as it throws error since all fields are required.
+ - [] Fix issue with the patch /vaccines as it throws error since all fields are required.
  - [x] Add controller, service, entity and repository for `UserEntity`
  - [x] Implement login and signup flow with JWT authentication
  - [x] Add auth guard to make the route private
+ - [x] Skip unknown properties being sent in the payload other than defined in DTOs
  - [ ] Add seeders and migration scripts
  - [ ] Add updatedBy, createdBy, deletedBy information in Vaccine
  - [ ] Implement authorization. Only allow admin for CRUD. But for normal user only allow to view

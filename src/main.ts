@@ -24,7 +24,9 @@ async function bootstrap() {
   configureSwagger(app);
 
   // Enable the validation pipe
-  app.useGlobalPipes(new ValidationPipe());
+  // we don't want extra property other than in dtos.
+  // want to cast if possible
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
   await app.listen(3000);
 }
