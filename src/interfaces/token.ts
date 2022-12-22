@@ -11,7 +11,7 @@ export interface AuthenticationToken extends AccessToken, RefreshToken {}
 export interface JwtTokenPayloadWithoutType {
   id: number;
   email: string;
-  userName: string;
+  username: string;
 }
 
 export interface JwtTokenPayload extends JwtTokenPayloadWithoutType {

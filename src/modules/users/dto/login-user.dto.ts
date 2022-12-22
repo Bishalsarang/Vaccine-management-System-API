@@ -11,7 +11,7 @@ export class LoginUserDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(255)
-  userName: string;
+  username: string;
 
   @ApiProperty({
     example: 'password123',

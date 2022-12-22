@@ -38,14 +38,14 @@ export class UsersService {
    * @returns The created user.
    */
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const { userName } = createUserDto;
+    const { username } = createUserDto;
     const existingUser = await this.userRepository.findOneBy({
-      userName,
+      username,
     });
 
     if (existingUser) {
       throw new ConflictException(
-        'User with username ' + createUserDto.userName + ' already exists',
+        'User with username ' + createUserDto.username + ' already exists',
       );
     }
 
@@ -61,9 +61,9 @@ export class UsersService {
    * @returns
    */
   getAuthenticationTokens(user: User): AuthenticationToken {
-    const { id, userName, email } = user;
+    const { id, username, email } = user;
 
-    const tokenPayload: JwtTokenPayloadWithoutType = { id, email, userName };
+    const tokenPayload: JwtTokenPayloadWithoutType = { id, email, username };
 
     const accessTokenPayload = {
       ...tokenPayload,
@@ -91,10 +91,10 @@ export class UsersService {
    */
   async login(loginUserDto: LoginUserDto): Promise<AuthenticationToken> {
     try {
-      const { userName, password } = loginUserDto;
+      const { username, password } = loginUserDto;
 
       const existingUser = await this.userRepository.findOneBy({
-        userName,
+        username,
       });
 
       if (!existingUser) {
