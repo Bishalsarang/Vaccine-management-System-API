@@ -48,6 +48,7 @@ This project is licensed under the MIT License. See the [LICENSE](https://chat.o
  - [x] Implement login and signup flow with JWT authentication
  - [x] Add auth guard to make the route private
  - [x] Skip unknown properties being sent in the payload other than defined in DTOs
+ - [x] Add route to get the access token from a refresh token
  - [ ] Add seeders and migration scripts
  - [ ] Add updatedBy, createdBy, deletedBy information in Vaccine
  - [ ] Implement authorization. Only allow admin for CRUD. But for normal user only allow to view

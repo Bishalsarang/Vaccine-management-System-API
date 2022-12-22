@@ -12,7 +12,16 @@ import { plainToClass } from 'class-transformer';
 import { User } from './entities/users.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { comparePassword } from 'src/utils/auth.utils';
+
+import { getTimeAfter } from '../../utils/date.utils';
+import { comparePassword } from '../../utils/auth.utils';
+
+import {
+  AuthenticationToken,
+  JwtTokenPayloadWithoutType,
+} from '../../interfaces/token';
+
+import { TOKEN_TYPES } from 'src/constant/base.constant';
 
 @Injectable()
 export class UsersService {
@@ -47,12 +56,40 @@ export class UsersService {
   }
 
   /**
-   * Login userr by generating JWT token.
+   *
+   * @param user {User}
+   * @returns
+   */
+  getAuthenticationTokens(user: User): AuthenticationToken {
+    const { id, userName, email } = user;
+
+    const tokenPayload: JwtTokenPayloadWithoutType = { id, email, userName };
+
+    const accessTokenPayload = {
+      ...tokenPayload,
+      exp: getTimeAfter('2h'),
+      type: TOKEN_TYPES.ACCESS,
+    };
+
+    const refreshTokenpayload = {
+      ...tokenPayload,
+      exp: getTimeAfter('1d'),
+      type: TOKEN_TYPES.REFRESH,
+    };
+
+    return {
+      accessToken: this.jwtService.sign(accessTokenPayload),
+      refreshToken: this.jwtService.sign(refreshTokenpayload),
+    };
+  }
+
+  /**
+   * Login user by generating JWT token.
    *
    * @param loginUserDto - The data for logging in user.
    * @returns {Object} The object with accessToken.
    */
-  async login(loginUserDto: LoginUserDto): Promise<{ accessToken: string }> {
+  async login(loginUserDto: LoginUserDto): Promise<AuthenticationToken> {
     try {
       const { userName, password } = loginUserDto;
 
@@ -76,17 +113,36 @@ export class UsersService {
         );
       }
 
-      return {
-        accessToken: this.jwtService.sign({
-          id: existingUser.id,
-          sub: loginUserDto.userName,
-          IsEmail: existingUser.email,
-        }),
-      };
+      return this.getAuthenticationTokens(existingUser);
     } catch (e) {
       throw new UnauthorizedException(
         'Username or password may be incorrect. Please try again',
       );
     }
+  }
+
+  /**
+   * Generates the access token based on the refresh token.
+   *
+   * @param refreshToken
+   */
+  async refreshToken(refreshToken: string): Promise<AuthenticationToken> {
+    const payload = await this.jwtService.verify(refreshToken);
+
+    const { id, type } = payload;
+
+    if (type !== TOKEN_TYPES.REFRESH) {
+      throw new UnauthorizedException('Invalid Token Type.');
+    }
+
+    const existingUser = await this.userRepository.findOneBy({
+      id,
+    });
+
+    if (!existingUser) {
+      throw new UnauthorizedException("The user doesn't exist. Invalid token");
+    }
+
+    return this.getAuthenticationTokens(existingUser);
   }
 }
