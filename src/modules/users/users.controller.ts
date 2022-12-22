@@ -1,15 +1,20 @@
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+
+import { User } from './entities/users.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { User } from './entities/users.entity';
+
+import { AuthenticationToken } from './../../interfaces/token';
+
 import { UsersService } from './users.service';
 
 /**
  * Controller for managing users.
  */
 @ApiTags('Users')
-@Controller('users')
+@Controller('auth')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -31,8 +36,13 @@ export class UsersController {
    * @param loginUserDto - The data for loggin in.
    * @returns The created user.
    */
-  @Post('/login')
+  @Post('/signin')
   login(@Body() loginUserDto: LoginUserDto) {
     return this.usersService.login(loginUserDto);
+  }
+
+  @Post('refreshToken')
+  refresh(@Body() payload: RefreshTokenDto): Promise<AuthenticationToken> {
+    return this.usersService.refreshToken(payload.refreshToken);
   }
 }
