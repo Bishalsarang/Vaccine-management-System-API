@@ -19,8 +19,8 @@ export abstract class AuditEntity {
   /**
    * The date and time when the entity was deleted.
    */
-  @DeleteDateColumn()
-  deletedAt: Date;
+  @DeleteDateColumn({ nullable: true })
+  deletedAt: Date | null | undefined;
 
   // TODO: Set createdBy, updatedBy
 }

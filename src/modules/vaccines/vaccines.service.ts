@@ -42,7 +42,7 @@ export class VaccineService {
   async findById(id: number): Promise<Vaccine | undefined> {
     const vaccine = await this.vaccineRepository.findOneBy({
       id,
-      deletedAt: null,
+      deletedAt: undefined,
     });
 
     if (vaccine) {

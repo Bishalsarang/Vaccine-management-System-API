@@ -10,7 +10,7 @@ export async function generatePasswordHash(
 ): Promise<string> {
   const hashedPassword = await bcrypt.hash(
     plainPassword,
-    parseInt(process.env.SALT_ROUNDS, 10) || 10,
+    parseInt(process.env.SALT_ROUNDS as string, 10) || 10,
   );
 
   return hashedPassword;
