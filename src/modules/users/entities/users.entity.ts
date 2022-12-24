@@ -6,7 +6,7 @@ import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
 
 import { AuditEntity } from '../../../common/entities/audit.entity';
 
-import { generatePasswordHash } from 'src/utils/auth.utils';
+import { generatePasswordHash } from '../../../utils/auth.utils';
 
 @Entity({ name: 'users' })
 export class User extends AuditEntity {

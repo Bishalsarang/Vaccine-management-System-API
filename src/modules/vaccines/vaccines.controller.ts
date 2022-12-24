@@ -23,7 +23,8 @@ import { VaccineService } from './vaccines.service';
 import { Vaccine } from './entities/vaccine.entity';
 import { CreateVaccineDto } from './dto/create-vaccine.dto';
 import { UpdateVaccineDto } from './dto/update-vaccine.dto';
-import { AuthGuard } from 'src/guard/auth/auth.guard';
+
+import { AuthGuard } from '../..//guard/auth/auth.guard';
 /**
  * Controller for managing vaccines.
  */

@@ -21,7 +21,7 @@ import {
   JwtTokenPayloadWithoutType,
 } from '../../interfaces/token';
 
-import { TOKEN_TYPES } from 'src/constant/base.constant';
+import { TOKEN_TYPES } from '../../constant/base.constant';
 
 @Injectable()
 export class UsersService {
