@@ -39,24 +39,24 @@ describe('VaccineService (findById)', () => {
       expect(result).toEqual(vaccine);
       expect(getSpy).toHaveBeenCalledWith({
         id: 1,
-        deletedAt: null,
+        deletedAt: undefined,
       });
     });
 
     it('should throw a NotFoundException if the vaccine does not exist', async () => {
       const getSpy = jest
         .spyOn(vaccineRepository, 'findOneBy')
-        .mockResolvedValue(undefined);
+        .mockResolvedValue(null);
       try {
         await vaccineService.findById(1);
-      } catch (e) {
+      } catch (e: any) {
         expect(e).toBeInstanceOf(NotFoundException);
         expect(e.message).toEqual("The vaccine doesn't exist");
       }
 
       expect(getSpy).toHaveBeenCalledWith({
         id: 1,
-        deletedAt: null,
+        deletedAt: undefined,
       });
     });
   });

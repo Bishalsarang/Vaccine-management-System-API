@@ -52,7 +52,7 @@ describe('VaccineService (findById)', () => {
       expect(result).toEqual(vaccine);
       expect(getSpy).toHaveBeenCalledWith({
         id: 1,
-        deletedAt: null,
+        deletedAt: undefined,
       });
       expect(saveSpy).toHaveBeenCalledWith({
         id: 1,
@@ -64,18 +64,18 @@ describe('VaccineService (findById)', () => {
       const updateVaccineDto = { name: 'Updated Vaccine' };
       const findOneBySpy = jest
         .spyOn(vaccineRepository, 'findOneBy')
-        .mockResolvedValue(undefined);
+        .mockResolvedValue(null);
 
       try {
         await vaccineService.update(1, updateVaccineDto);
-      } catch (e) {
+      } catch (e: any) {
         expect(e).toBeInstanceOf(NotFoundException);
         expect(e.message).toEqual("The vaccine doesn't exist");
       }
 
       expect(findOneBySpy).toHaveBeenCalledWith({
         id: 1,
-        deletedAt: null,
+        deletedAt: undefined,
       });
     });
   });

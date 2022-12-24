@@ -53,7 +53,7 @@ describe('VaccineService (findAll)', () => {
           numberOfDoses: 3,
           isMandatory: false,
           ...dateFields,
-          deletedAt: Date.now(),
+          deletedAt: new Date(),
         },
       ];
 

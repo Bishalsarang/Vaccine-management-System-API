@@ -1,3 +1,4 @@
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
@@ -15,6 +16,7 @@ describe('VaccinesController', () => {
       controllers: [VaccineController],
       providers: [
         VaccineService,
+        JwtService,
         {
           provide: getRepositoryToken(Vaccine),
           useClass: Repository,
