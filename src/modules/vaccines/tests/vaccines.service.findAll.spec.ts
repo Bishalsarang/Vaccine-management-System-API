@@ -16,7 +16,7 @@ describe('VaccineService (findAll)', () => {
   });
 
   describe('findAll', () => {
-    it('should return an array of vaccines', async () => {
+    it('should return an array of vaccines ordered by mandatory vaccines at the top in alphabetical order', async () => {
       const dateFields = {
         deletedAt: null,
         createdAt: new Date(),
@@ -25,16 +25,6 @@ describe('VaccineService (findAll)', () => {
 
       const vaccines: Vaccine[] = [
         {
-          id: 1,
-          numberOfDoses: 1,
-          isMandatory: false,
-          name: 'Flu Vaccine',
-          companyContact: '123-456-7890',
-          companyEmail: 'contact@fluvaccinecompany.com',
-          description: 'A vaccine to protect against the flu',
-          ...dateFields,
-        },
-        {
           id: 2,
           name: 'Measles Vaccine',
           companyEmail: 'contact@measlesvaccinecompany.com',
@@ -42,6 +32,16 @@ describe('VaccineService (findAll)', () => {
           description: 'A vaccine to protect against measles',
           numberOfDoses: 2,
           isMandatory: true,
+          ...dateFields,
+        },
+        {
+          id: 1,
+          numberOfDoses: 1,
+          isMandatory: false,
+          name: 'Flu Vaccine',
+          companyContact: '123-456-7890',
+          companyEmail: 'contact@fluvaccinecompany.com',
+          description: 'A vaccine to protect against the flu',
           ...dateFields,
         },
         {
@@ -62,7 +62,13 @@ describe('VaccineService (findAll)', () => {
         .mockResolvedValue(vaccines);
 
       const result = await vaccineService.findAll();
-      expect(getSpy).toHaveBeenCalled();
+      expect(getSpy).toHaveBeenCalledWith({
+        order: {
+          name: 'ASC',
+          isMandatory: 'DESC',
+        },
+      });
+
       expect(result).toEqual(vaccines);
     });
   });

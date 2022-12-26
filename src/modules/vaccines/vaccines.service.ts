@@ -30,7 +30,12 @@ export class VaccineService {
    * @returns A list of vaccines.
    */
   findAll(): Promise<Vaccine[]> {
-    return this.vaccineRepository.find();
+    return this.vaccineRepository.find({
+      order: {
+        name: 'ASC',
+        isMandatory: 'DESC',
+      },
+    });
   }
 
   /**
