@@ -32,8 +32,8 @@ export class VaccineService {
   findAll(): Promise<Vaccine[]> {
     return this.vaccineRepository.find({
       order: {
-        name: 'ASC',
         isMandatory: 'DESC',
+        name: 'ASC',
       },
     });
   }
