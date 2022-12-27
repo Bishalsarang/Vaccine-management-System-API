@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  IsIn,
   IsString,
   IsNumber,
   MaxLength,
@@ -7,6 +8,7 @@ import {
   IsNotEmpty,
   IsOptional,
 } from 'class-validator';
+import { VACCINE_STAGES } from '../../../constant/base.constant';
 
 export class CreateVaccineDto {
   @ApiProperty({
@@ -51,4 +53,14 @@ export class CreateVaccineDto {
   })
   @IsBoolean()
   isMandatory?: boolean;
+
+  @ApiProperty({
+    default: VACCINE_STAGES.research,
+    type: 'string',
+    enum: Object.values(VACCINE_STAGES),
+    description: 'The property for the clinical stage.',
+  })
+  @IsString()
+  @IsIn(Object.values(VACCINE_STAGES))
+  stage: string;
 }

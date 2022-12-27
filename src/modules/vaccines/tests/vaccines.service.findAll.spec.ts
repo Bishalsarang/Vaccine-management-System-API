@@ -4,6 +4,7 @@ import { Vaccine } from '.././entities/vaccine.entity';
 
 import { setup } from './vaccine.service.setup';
 import { VaccineService } from '.././vaccines.service';
+import { VACCINE_STAGES } from '../../../constant/base.constant';
 
 describe('VaccineService (findAll)', () => {
   let vaccineService: VaccineService;
@@ -27,11 +28,11 @@ describe('VaccineService (findAll)', () => {
         {
           id: 2,
           name: 'Measles Vaccine',
-          companyEmail: 'contact@measlesvaccinecompany.com',
-          companyContact: '123-456-7890',
           description: 'A vaccine to protect against measles',
           numberOfDoses: 2,
           isMandatory: true,
+          stage: VACCINE_STAGES.clinical,
+          companyName: 'SF Pharma',
           ...dateFields,
         },
         {
@@ -39,16 +40,16 @@ describe('VaccineService (findAll)', () => {
           numberOfDoses: 1,
           isMandatory: false,
           name: 'Flu Vaccine',
-          companyContact: '123-456-7890',
-          companyEmail: 'contact@fluvaccinecompany.com',
+          stage: VACCINE_STAGES.manufacturing,
+          companyName: 'SF Pharma',
           description: 'A vaccine to protect against the flu',
           ...dateFields,
         },
         {
           id: 3,
+          stage: VACCINE_STAGES.regulatory,
+          companyName: 'SF Pharma',
           name: 'Tetanus Vaccine',
-          companyEmail: 'contact@tetanusvaccinecompany.com',
-          companyContact: '123-456-7890',
           description: 'A vaccine to protect against tetanus',
           numberOfDoses: 3,
           isMandatory: false,

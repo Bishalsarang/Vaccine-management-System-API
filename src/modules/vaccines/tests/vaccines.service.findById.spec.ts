@@ -6,6 +6,7 @@ import { Vaccine } from '.././entities/vaccine.entity';
 
 import { setup } from './vaccine.service.setup';
 import { VaccineService } from '.././vaccines.service';
+import { VACCINE_STAGES } from '../../../constant/base.constant';
 
 describe('VaccineService (findById)', () => {
   let vaccineService: VaccineService;
@@ -24,8 +25,8 @@ describe('VaccineService (findById)', () => {
         numberOfDoses: 1,
         isMandatory: false,
         name: 'Flu Vaccine',
-        companyContact: '123-456-7890',
-        companyEmail: 'contact@fluvaccinecompany.com',
+        stage: VACCINE_STAGES.clinical,
+        companyName: 'Lucifier Drug Discovery',
         description: 'A vaccine to protect against the flu',
         deletedAt: null,
         createdAt: new Date(),

@@ -6,6 +6,7 @@ import { Vaccine } from '.././entities/vaccine.entity';
 
 import { setup } from './vaccine.service.setup';
 import { VaccineService } from '.././vaccines.service';
+import { VACCINE_STAGES } from '../../../constant/base.constant';
 
 describe('VaccineService (findById)', () => {
   let vaccineService: VaccineService;
@@ -31,10 +32,10 @@ describe('VaccineService (findById)', () => {
         numberOfDoses: 1,
         isMandatory: false,
         createdAt: new Date(),
+        stage: VACCINE_STAGES.research,
+        companyName: 'SF Pharma',
         updatedAt: new Date(),
         name: 'Measles Vaccine',
-        companyContact: '123-456-7890',
-        companyEmail: 'contact@measlesvaccinecompany.com',
         description: 'A vaccine to protect against the measles',
       };
 

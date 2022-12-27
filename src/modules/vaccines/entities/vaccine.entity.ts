@@ -1,7 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Min, IsBoolean, MaxLength, IsNotEmpty } from 'class-validator';
+import { Min, IsBoolean, MaxLength, IsNotEmpty, IsIn } from 'class-validator';
 import { AuditEntity } from '../../../common/entities/audit.entity';
+
+import { VACCINE_STAGES } from '../../../constant/base.constant';
 
 @Entity({ name: 'vaccines' })
 export class Vaccine extends AuditEntity {
@@ -19,6 +21,11 @@ export class Vaccine extends AuditEntity {
   @Column()
   @Min(1)
   numberOfDoses: number;
+
+  @Column()
+  @IsNotEmpty()
+  @IsIn(Object.values(VACCINE_STAGES))
+  stage: string;
 
   @Column({ default: false })
   @IsBoolean()

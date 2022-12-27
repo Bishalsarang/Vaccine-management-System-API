@@ -5,6 +5,7 @@ import { CreateVaccineDto } from '.././dto/create-vaccine.dto';
 
 import { setup } from './vaccine.service.setup';
 import { VaccineService } from '.././vaccines.service';
+import { VACCINE_STAGES } from '../../../constant/base.constant';
 
 describe('VaccineService (create)', () => {
   let vaccineService: VaccineService;
@@ -22,8 +23,8 @@ describe('VaccineService (create)', () => {
         numberOfDoses: 1,
         isMandatory: false,
         name: 'Flu Vaccine',
-        companyContact: '123-456-7890',
-        companyEmail: 'contact@fluvaccinecompany.com',
+        companyName: 'SF Pharmetics',
+        stage: VACCINE_STAGES.research,
         description: 'A vaccine to protect against the flu',
       };
 
