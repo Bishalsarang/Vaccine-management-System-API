@@ -1,11 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
-  IsEmail,
   IsString,
   IsNumber,
   MaxLength,
   IsBoolean,
   IsNotEmpty,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateVaccineDto {
@@ -20,22 +20,13 @@ export class CreateVaccineDto {
   name: string;
 
   @ApiProperty({
-    example: 'contact@fluvaccinecompany.com',
+    example: 'Chaudhary Pharmetic',
     type: 'string',
-    format: 'email',
-    description: 'The email of the company that produces the vaccine.',
+    description: 'The name of the company. For example, Chaudhary Pharmetics',
   })
-  @IsEmail()
-  companyEmail: string;
-
-  @ApiProperty({
-    example: '123-456-7890',
-    type: 'string',
-    description:
-      'The contact information of the company that produces the vaccine.',
-  })
+  @IsOptional()
   @IsString()
-  companyContact: string;
+  companyName: string;
 
   @ApiPropertyOptional({
     example: 'A vaccine to protect against the flu',

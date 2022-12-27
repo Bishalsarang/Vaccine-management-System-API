@@ -1,13 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-import {
-  Min,
-  IsEmail,
-  IsNumber,
-  IsBoolean,
-  MaxLength,
-  IsNotEmpty,
-} from 'class-validator';
+import { Min, IsBoolean, MaxLength, IsNotEmpty } from 'class-validator';
 import { AuditEntity } from '../../../common/entities/audit.entity';
 
 @Entity({ name: 'vaccines' })
@@ -31,11 +24,7 @@ export class Vaccine extends AuditEntity {
   @IsBoolean()
   isMandatory?: boolean;
 
-  @Column()
-  @IsEmail()
-  companyEmail: string;
-
-  @Column()
-  @IsNumber()
-  companyContact: string;
+  @Column({ nullable: true })
+  @MaxLength(30)
+  companyName: string;
 }
