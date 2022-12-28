@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+
+import { join } from 'path';
 
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
@@ -12,6 +15,10 @@ import { VaccinesModule } from './modules/vaccines/vaccines.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'coverage/lcov-report'),
+      exclude: ['/api*', 'swagger-ui'],
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
