@@ -6,6 +6,7 @@ import { Repository, UpdateResult } from 'typeorm';
 import { Vaccine } from './entities/vaccine.entity';
 import { CreateVaccineDto } from './dto/create-vaccine.dto';
 import { UpdateVaccineDto } from './dto/update-vaccine.dto';
+import { VaccineStageCount } from './dto/vaccine-stage-count.dto';
 
 @Injectable()
 export class VaccineService {
@@ -77,5 +78,19 @@ export class VaccineService {
    */
   remove(id: number): Promise<UpdateResult> {
     return this.vaccineRepository.softDelete(id);
+  }
+
+  /**
+   *Service to get vaccine stages count.
+   */
+  async getVaccineStagesCount(): Promise<VaccineStageCount[]> {
+    const query = this.vaccineRepository
+      .createQueryBuilder('vaccines')
+      .select(`"stage"`, 'name')
+      .addSelect(`COUNT("stage")`, 'count')
+      .groupBy('stage');
+    const res = await query.getRawMany();
+
+    return res;
   }
 }

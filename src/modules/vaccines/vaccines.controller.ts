@@ -25,6 +25,8 @@ import { CreateVaccineDto } from './dto/create-vaccine.dto';
 import { UpdateVaccineDto } from './dto/update-vaccine.dto';
 
 import { AuthGuard } from '../..//guard/auth/auth.guard';
+import { VaccineStageCount } from './dto/vaccine-stage-count.dto';
+
 /**
  * Controller for managing vaccines.
  */
@@ -52,10 +54,20 @@ export class VaccineController {
    *
    * @returns A list of vaccines.
    */
+
   @Get()
   @ApiResponse({ status: HttpStatus.OK, type: [Vaccine] })
   findAll() {
     return this.vaccineService.findAll();
+  }
+
+  /**
+   * Controller method that fetches the all the distinct vacine stages and their count.
+   */
+  @Get('stages')
+  @ApiResponse({ status: HttpStatus.OK, type: [VaccineStageCount] })
+  getStagesCount(): Promise<VaccineStageCount[]> {
+    return this.vaccineService.getVaccineStagesCount();
   }
 
   /**
