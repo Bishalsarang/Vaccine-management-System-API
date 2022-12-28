@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
 import {
   IsIn,
   IsString,
@@ -8,6 +9,8 @@ import {
   IsNotEmpty,
   IsOptional,
 } from 'class-validator';
+import { Type } from 'class-transformer';
+
 import { VACCINE_STAGES } from '../../../constant/base.constant';
 
 export class CreateVaccineDto {
@@ -44,6 +47,9 @@ export class CreateVaccineDto {
     description: 'The number of doses for the vaccine.',
   })
   @IsNumber()
+  // If we use multiform data with interceptor @UseInterceptors(FileInterceptor())
+  // values are converted to string. So we use Type form class-validator
+  @Type(() => Number)
   numberOfDoses: number;
 
   @ApiPropertyOptional({
@@ -51,6 +57,7 @@ export class CreateVaccineDto {
     type: 'boolean',
     description: 'The property whether the field is mandatory.',
   })
+  @Type(() => Boolean)
   @IsBoolean()
   isMandatory?: boolean;
 
@@ -63,4 +70,11 @@ export class CreateVaccineDto {
   @IsString()
   @IsIn(Object.values(VACCINE_STAGES))
   stage: string;
+
+  @ApiProperty({
+    type: 'string',
+    format: 'binary',
+    description: 'The image file for the vaccine.',
+  })
+  image: string;
 }
