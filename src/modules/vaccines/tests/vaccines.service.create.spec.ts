@@ -10,16 +10,12 @@ import { VACCINE_STAGES } from '../../../constant/base.constant';
 const imageUrl = 'https://cloudinary.com/image.jpg';
 
 /* Mock the cloudinary library. */
-jest.mock('cloudinary', () => ({
-  v2: {
-    uploader: {
-      upload: jest.fn().mockResolvedValue({
-        // Got the error: Cannot access 'imageUrl' before initialization in test file
-        // So currently duplicating
-        secure_url: 'https://cloudinary.com/image.jpg',
-      }),
-    },
-  },
+jest.mock('cloudinaryService', () => ({
+  uploadImage: jest.fn().mockResolvedValue({
+    // Got the error: Cannot access 'imageUrl' before initialization in test file
+    // So currently duplicating
+    secure_url: 'https://cloudinary.com/image.jpg',
+  }),
 }));
 
 describe('VaccineService (create)', () => {

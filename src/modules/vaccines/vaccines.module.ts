@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Vaccine } from './entities/vaccine.entity';
 import { VaccineService } from './vaccines.service';
 import { VaccineController } from './vaccines.controller';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Module({
   imports: [
@@ -12,6 +13,6 @@ import { VaccineController } from './vaccines.controller';
     JwtModule.register({ secret: process.env.SECRET_KEY || 'SECRET' }),
   ],
   controllers: [VaccineController],
-  providers: [VaccineService],
+  providers: [VaccineService, CloudinaryService],
 })
 export class VaccinesModule {}

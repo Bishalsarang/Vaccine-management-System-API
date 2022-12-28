@@ -8,6 +8,9 @@ import { VaccineService } from './vaccines.service';
 import { VaccineController } from './vaccines.controller';
 import { Vaccine } from './entities/vaccine.entity';
 
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { ConfigService } from '@nestjs/config';
+
 describe('VaccinesController', () => {
   let vaccineController: VaccineController;
 
@@ -17,6 +20,8 @@ describe('VaccinesController', () => {
       providers: [
         VaccineService,
         JwtService,
+        CloudinaryService,
+        ConfigService,
         {
           provide: getRepositoryToken(Vaccine),
           useClass: Repository,
