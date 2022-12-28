@@ -87,7 +87,7 @@ export class VaccineService {
     const query = this.vaccineRepository
       .createQueryBuilder('vaccines')
       .select(`"stage"`, 'name')
-      .addSelect(`COUNT("stage")`, 'count')
+      .addSelect(`COUNT("stage")::integer`, 'count')
       .groupBy('stage');
     const res = await query.getRawMany();
 
