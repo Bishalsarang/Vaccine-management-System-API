@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
+import { MulterModule } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -11,10 +13,12 @@ import { AppController } from './app.controller';
 
 import { UsersModule } from './modules/users/users.module';
 import { VaccinesModule } from './modules/vaccines/vaccines.module';
+import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+import { CloudinaryService } from './modules/cloudinary/cloudinary.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'coverage/lcov-report'),
       exclude: ['/api*', 'swagger-ui'],
@@ -45,10 +49,14 @@ import { VaccinesModule } from './modules/vaccines/vaccines.module';
             : undefined,
       },
     }),
+    MulterModule.register({
+      storage: memoryStorage(), // use memory storage for having the buffer
+    }),
     VaccinesModule,
     UsersModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CloudinaryService],
 })
 export class AppModule {}

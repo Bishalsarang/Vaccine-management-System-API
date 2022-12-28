@@ -55,9 +55,9 @@ export class VaccineController {
   @ApiCreatedResponse({ type: Vaccine })
   create(
     @Body() createVaccineDto: CreateVaccineDto,
-    @UploadedFile() file: any,
+    @UploadedFile() image: any,
   ) {
-    return this.vaccineService.create(createVaccineDto, file);
+    return this.vaccineService.create(createVaccineDto, image);
   }
 
   /**

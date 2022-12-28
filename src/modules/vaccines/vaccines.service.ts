@@ -1,5 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Repository, UpdateResult } from 'typeorm';
 
@@ -8,13 +8,14 @@ import { CreateVaccineDto } from './dto/create-vaccine.dto';
 import { UpdateVaccineDto } from './dto/update-vaccine.dto';
 import { VaccineStageCount } from './dto/vaccine-stage-count.dto';
 
-import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryService } from './../cloudinary/cloudinary.service';
 
 @Injectable()
 export class VaccineService {
   constructor(
     @InjectRepository(Vaccine)
     private readonly vaccineRepository: Repository<Vaccine>,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   /**
@@ -28,12 +29,12 @@ export class VaccineService {
     createVaccineDto: CreateVaccineDto,
     file: any,
   ): Promise<Vaccine> {
-    // TODO: Create a  separate module for cloudinary and use.
-    const result = await cloudinary.uploader.upload(file.path);
+    const res = await this.cloudinaryService.uploadImage(file);
 
-    const imageUrl = result.secure_url;
-
-    return this.vaccineRepository.save({ ...createVaccineDto, imageUrl });
+    return this.vaccineRepository.save({
+      ...createVaccineDto,
+      imageUrl: res.url,
+    });
   }
 
   /**
@@ -77,6 +78,7 @@ export class VaccineService {
    * @returns The updated vaccine.
    */
   async update(id: number, updateVaccineDto: UpdateVaccineDto) {
+    // TODO: Add feature to update new image. But How can we ensure that image hasn't already been uploaded.
     await this.findById(id);
 
     return this.vaccineRepository.save({ id, ...updateVaccineDto });
