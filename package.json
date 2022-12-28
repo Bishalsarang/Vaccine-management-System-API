@@ -31,6 +31,7 @@
     "bcrypt": "^5.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "cloudinary": "^1.33.0",
     "nestjs-pino": "^3.1.1",
     "pg": "^8.8.0",
     "pino-http": "^8.3.0",
@@ -91,7 +92,10 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageReporters":[ "html-spa", "lcov"],
+    "coverageReporters": [
+      "html-spa",
+      "lcov"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }

@@ -8,6 +8,8 @@ import { CreateVaccineDto } from './dto/create-vaccine.dto';
 import { UpdateVaccineDto } from './dto/update-vaccine.dto';
 import { VaccineStageCount } from './dto/vaccine-stage-count.dto';
 
+import { v2 as cloudinary } from 'cloudinary';
+
 @Injectable()
 export class VaccineService {
   constructor(
@@ -19,10 +21,19 @@ export class VaccineService {
    * Creates a new vaccine.
    *
    * @param createVaccineDto - The data for creating the vaccine.
+   * @param file - The uploaded image file
    * @returns The created vaccine.
    */
-  create(createVaccineDto: CreateVaccineDto): Promise<Vaccine> {
-    return this.vaccineRepository.save(createVaccineDto);
+  async create(
+    createVaccineDto: CreateVaccineDto,
+    file: any,
+  ): Promise<Vaccine> {
+    // TODO: Create a  separate module for cloudinary and use.
+    const result = await cloudinary.uploader.upload(file.path);
+
+    const imageUrl = result.secure_url;
+
+    return this.vaccineRepository.save({ ...createVaccineDto, imageUrl });
   }
 
   /**

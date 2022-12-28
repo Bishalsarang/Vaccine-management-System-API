@@ -8,15 +8,20 @@ import {
   UseGuards,
   Controller,
   HttpStatus,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import {
   ApiTags,
+  ApiBody,
   ApiParam,
   ApiResponse,
+  ApiConsumes,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNotFoundResponse,
-  ApiBearerAuth,
 } from '@nestjs/swagger';
 
 import { VaccineService } from './vaccines.service';
@@ -44,9 +49,32 @@ export class VaccineController {
    * @returns The created vaccine.
    */
   @Post()
+  @UseInterceptors(FileInterceptor('image'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: CreateVaccineDto })
   @ApiCreatedResponse({ type: Vaccine })
-  create(@Body() createVaccineDto: CreateVaccineDto) {
-    return this.vaccineService.create(createVaccineDto);
+  create(
+    @Body() createVaccineDto: CreateVaccineDto,
+    @UploadedFile() file: any,
+  ) {
+    return this.vaccineService.create(createVaccineDto, file);
+  }
+
+  /**
+   * Updates a vaccine.
+   *
+   * @param id - The ID of the vaccine to update.
+   * @param updateVaccineDto - The data for updating the vaccine.
+   * @returns The updated vaccine.
+   */
+  @Patch(':id')
+  @UseInterceptors(FileInterceptor('image'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: UpdateVaccineDto })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiResponse({ status: HttpStatus.OK, type: Vaccine })
+  update(@Param('id') id: string, @Body() updateVaccineDto: UpdateVaccineDto) {
+    return this.vaccineService.update(+id, updateVaccineDto);
   }
 
   /**
@@ -84,20 +112,6 @@ export class VaccineController {
   @ApiParam({ name: 'id', type: Number })
   findOne(@Param('id') id: string) {
     return this.vaccineService.findById(+id);
-  }
-
-  /**
-   * Updates a vaccine.
-   *
-   * @param id - The ID of the vaccine to update.
-   * @param updateVaccineDto - The data for updating the vaccine.
-   * @returns The updated vaccine.
-   */
-  @Patch(':id')
-  @ApiParam({ name: 'id', type: Number })
-  @ApiResponse({ status: HttpStatus.OK, type: Vaccine })
-  update(@Param('id') id: string, @Body() updateVaccineDto: UpdateVaccineDto) {
-    return this.vaccineService.update(+id, updateVaccineDto);
   }
 
   /**
