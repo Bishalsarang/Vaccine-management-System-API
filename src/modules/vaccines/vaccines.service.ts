@@ -27,13 +27,18 @@ export class VaccineService {
    */
   async create(
     createVaccineDto: CreateVaccineDto,
-    file: any,
+    file: Express.Multer.File,
   ): Promise<Vaccine> {
-    const res = await this.cloudinaryService.uploadImage(file);
+    let imageUrl = '';
+
+    if (file) {
+      const res = await this.cloudinaryService.uploadImage(file);
+      imageUrl = res.url;
+    }
 
     return this.vaccineRepository.save({
       ...createVaccineDto,
-      imageUrl: res.url,
+      imageUrl,
     });
   }
 

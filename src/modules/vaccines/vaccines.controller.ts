@@ -55,7 +55,7 @@ export class VaccineController {
   @ApiCreatedResponse({ type: Vaccine })
   create(
     @Body() createVaccineDto: CreateVaccineDto,
-    @UploadedFile() image: any,
+    @UploadedFile() image: Express.Multer.File,
   ) {
     return this.vaccineService.create(createVaccineDto, image);
   }
