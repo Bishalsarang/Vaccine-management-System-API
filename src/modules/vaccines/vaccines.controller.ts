@@ -30,7 +30,7 @@ import { CreateVaccineDto } from './dto/create-vaccine.dto';
 import { UpdateVaccineDto } from './dto/update-vaccine.dto';
 
 import { AuthGuard } from '../..//guard/auth/auth.guard';
-import { VaccineStageCount } from './dto/vaccine-stage-count.dto';
+import { FieldCountWrapper } from './dto/vaccine-stage-count.dto';
 
 /**
  * Controller for managing vaccines.
@@ -93,9 +93,18 @@ export class VaccineController {
    * Controller method that fetches the all the distinct vacine stages and their count.
    */
   @Get('stages')
-  @ApiResponse({ status: HttpStatus.OK, type: [VaccineStageCount] })
-  getStagesCount(): Promise<VaccineStageCount[]> {
+  @ApiResponse({ status: HttpStatus.OK, type: [FieldCountWrapper] })
+  getStagesCount(): Promise<FieldCountWrapper[]> {
     return this.vaccineService.getVaccineStagesCount();
+  }
+
+  /**
+   * Controller method that fetches the all the distinct allergies and their count.
+   */
+  @Get('allergies')
+  @ApiResponse({ status: HttpStatus.OK, type: [FieldCountWrapper] })
+  getAllergiesCount(): Promise<FieldCountWrapper[]> {
+    return this.vaccineService.getAllergiesCount();
   }
 
   /**

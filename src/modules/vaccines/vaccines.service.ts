@@ -6,7 +6,7 @@ import { Repository, UpdateResult } from 'typeorm';
 import { Vaccine } from './entities/vaccine.entity';
 import { CreateVaccineDto } from './dto/create-vaccine.dto';
 import { UpdateVaccineDto } from './dto/update-vaccine.dto';
-import { VaccineStageCount } from './dto/vaccine-stage-count.dto';
+import { FieldCountWrapper } from './dto/vaccine-stage-count.dto';
 
 import { CloudinaryService } from './../cloudinary/cloudinary.service';
 
@@ -43,6 +43,7 @@ export class VaccineService {
    * @returns A list of vaccines.
    */
   findAll(): Promise<Vaccine[]> {
+    // The order of keys is important here.
     return this.vaccineRepository.find({
       order: {
         isMandatory: 'DESC',
@@ -81,7 +82,10 @@ export class VaccineService {
     // TODO: Add feature to update new image. But How can we ensure that image hasn't already been uploaded.
     await this.findById(id);
 
-    return this.vaccineRepository.save({ id, ...updateVaccineDto });
+    return this.vaccineRepository.save({
+      id,
+      ...updateVaccineDto,
+    });
   }
 
   /**
@@ -96,14 +100,32 @@ export class VaccineService {
   /**
    *Service to get vaccine stages count.
    */
-  async getVaccineStagesCount(): Promise<VaccineStageCount[]> {
+  async getVaccineStagesCount(): Promise<FieldCountWrapper[]> {
     const query = this.vaccineRepository
       .createQueryBuilder('vaccines')
       .select(`"stage"`, 'name')
       .addSelect(`COUNT("stage")::integer`, 'count')
       .groupBy('stage');
-    const res = await query.getRawMany();
+    const stagesCount = await query.getRawMany();
 
-    return res;
+    return stagesCount;
+  }
+
+  /**
+   * We're selecting the allergies from the vaccine table, unnesting them, and then counting the number
+   * of times each allergy appears
+   *
+   * @returns An array of objects with the allergy and the count of that allergy.
+   */
+  async getAllergiesCount() {
+    const response = await this.vaccineRepository
+      .query(`SELECT UPPER(allergy) as name, COUNT(*)::integer
+              FROM (
+                 SELECT unnest(allergies) as allergy
+                  FROM core.vaccines
+               ) t
+            GROUP BY UPPER(allergy)`);
+
+    return response;
   }
 }

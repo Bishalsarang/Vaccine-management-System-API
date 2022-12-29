@@ -1,4 +1,4 @@
-export class VaccineStageCount {
+export class FieldCountWrapper {
   name: string;
   count: number;
 }

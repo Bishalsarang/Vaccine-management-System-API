@@ -8,6 +8,7 @@ import {
   MaxLength,
   IsNotEmpty,
 } from 'class-validator';
+
 import { AuditEntity } from '../../../common/entities/audit.entity';
 
 import { VACCINE_STAGES } from '../../../constant/base.constant';
