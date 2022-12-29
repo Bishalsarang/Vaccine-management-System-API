@@ -1,6 +1,8 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   Injectable,
+  HttpStatus,
+  HttpException,
   ConflictException,
   BadRequestException,
   UnauthorizedException,
@@ -65,6 +67,7 @@ export class UsersService {
 
     const tokenPayload: JwtTokenPayloadWithoutType = { id, email, username };
 
+    // TODO: Put the expiry in environment config.
     const accessTokenPayload = {
       ...tokenPayload,
       exp: getTimeAfter('2h'),
@@ -127,7 +130,14 @@ export class UsersService {
    * @param refreshToken
    */
   async refreshToken(refreshToken: string): Promise<AuthenticationToken> {
-    const payload = await this.jwtService.verify(refreshToken);
+    let payload;
+
+    try {
+      payload = await this.jwtService.verify(refreshToken);
+    } catch (err: any) {
+      const message = 'Token error: ' + (err.message || err.name);
+      throw new HttpException(message, HttpStatus.UNAUTHORIZED);
+    }
 
     const { id, type } = payload;
 

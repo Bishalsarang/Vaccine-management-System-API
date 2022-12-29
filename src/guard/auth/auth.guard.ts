@@ -50,7 +50,7 @@ export class AuthGuard implements CanActivate {
     const [schema, token] = auth.split(' ');
 
     if (schema !== 'Bearer') {
-      throw new HttpException('Invalid token', HttpStatus.FORBIDDEN);
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
 
     try {
@@ -58,7 +58,7 @@ export class AuthGuard implements CanActivate {
       return decode;
     } catch (err: any) {
       const message = 'Token error: ' + (err.message || err.name);
-      throw new HttpException(message, HttpStatus.FORBIDDEN);
+      throw new HttpException(message, HttpStatus.UNAUTHORIZED);
     }
   }
 }
