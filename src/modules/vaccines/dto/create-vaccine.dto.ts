@@ -77,4 +77,12 @@ export class CreateVaccineDto {
     description: 'The image file for the vaccine.',
   })
   image: string;
+
+  @ApiProperty({
+    example: ['Nausea', 'Fever', 'Rashes'],
+    type: 'array',
+    description:
+      'The allergies or sideffects that can be seen with the vaccine.',
+  })
+  allergies: string[];
 }

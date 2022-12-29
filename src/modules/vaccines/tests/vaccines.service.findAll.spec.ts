@@ -33,6 +33,7 @@ describe('VaccineService (findAll)', () => {
           isMandatory: true,
           stage: VACCINE_STAGES.clinical,
           companyName: 'SF Pharma',
+          allergies: ['Fever'],
           ...dateFields,
         },
         {
@@ -43,6 +44,7 @@ describe('VaccineService (findAll)', () => {
           stage: VACCINE_STAGES.manufacturing,
           companyName: 'SF Pharma',
           description: 'A vaccine to protect against the flu',
+          allergies: [],
           ...dateFields,
         },
         {
@@ -53,6 +55,7 @@ describe('VaccineService (findAll)', () => {
           description: 'A vaccine to protect against tetanus',
           numberOfDoses: 3,
           isMandatory: false,
+          allergies: ['Vomit'],
           ...dateFields,
           deletedAt: new Date(),
         },

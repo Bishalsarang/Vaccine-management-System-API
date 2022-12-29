@@ -29,6 +29,7 @@ describe('VaccineService (findById)', () => {
         companyName: 'Lucifier Drug Discovery',
         description: 'A vaccine to protect against the flu',
         deletedAt: null,
+        allergies: [],
         createdAt: new Date(),
         updatedAt: new Date(),
       };

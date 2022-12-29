@@ -37,6 +37,7 @@ describe('VaccineService (create)', () => {
         companyName: 'SF Pharmetics',
         image: '',
         stage: VACCINE_STAGES.research,
+        allergies: ['Eye pain'],
         description: 'A vaccine to protect against the flu',
       };
       const file = {

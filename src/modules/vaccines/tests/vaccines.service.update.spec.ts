@@ -36,6 +36,7 @@ describe('VaccineService (findById)', () => {
         companyName: 'SF Pharma',
         updatedAt: new Date(),
         name: 'Measles Vaccine',
+        allergies: ['fever'],
         description: 'A vaccine to protect against the measles',
       };
 
