@@ -53,7 +53,12 @@ function configureSwagger(app: INestApplication) {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup(SWAGGER_URL, app, document);
+  SwaggerModule.setup(SWAGGER_URL, app, document, {
+    swaggerOptions: {
+      tagsSorter: 'alpha',
+      persistAuthorization: true,
+    },
+  });
 }
 
 bootstrap();
