@@ -31,6 +31,7 @@ import { UpdateVaccineDto } from './dto/update-vaccine.dto';
 
 import { AuthGuard } from '../..//guard/auth/auth.guard';
 import { FieldCountWrapper } from './dto/vaccine-stage-count.dto';
+import { FileValidatorPipe } from '../../pipe/file.validator';
 
 /**
  * Controller for managing vaccines.
@@ -55,7 +56,8 @@ export class VaccineController {
   @ApiCreatedResponse({ type: Vaccine })
   create(
     @Body() createVaccineDto: CreateVaccineDto,
-    @UploadedFile() image: Express.Multer.File,
+    @UploadedFile(FileValidatorPipe)
+    image: Express.Multer.File,
   ) {
     return this.vaccineService.create(createVaccineDto, image);
   }
@@ -76,7 +78,8 @@ export class VaccineController {
   update(
     @Param('id') id: string,
     @Body() updateVaccineDto: UpdateVaccineDto,
-    @UploadedFile() image: Express.Multer.File,
+    @UploadedFile(FileValidatorPipe)
+    image: Express.Multer.File,
   ) {
     return this.vaccineService.update(+id, updateVaccineDto, image);
   }

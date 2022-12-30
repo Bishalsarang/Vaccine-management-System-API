@@ -10,6 +10,8 @@ import { FieldCountWrapper } from './dto/vaccine-stage-count.dto';
 
 import { CloudinaryService } from './../cloudinary/cloudinary.service';
 
+import { calculateHash } from '../../utils/file';
+
 @Injectable()
 export class VaccineService {
   constructor(
@@ -29,16 +31,11 @@ export class VaccineService {
     createVaccineDto: CreateVaccineDto,
     file: Express.Multer.File,
   ): Promise<Vaccine> {
-    let imageUrl = '';
-
-    if (file) {
-      const res = await this.cloudinaryService.uploadImage(file);
-      imageUrl = res.url;
-    }
+    const imageUrlAndHash = await this.uploadFileAndGetImageUrl(file);
 
     return this.vaccineRepository.save({
       ...createVaccineDto,
-      imageUrl,
+      ...imageUrlAndHash,
     });
   }
 
@@ -88,21 +85,59 @@ export class VaccineService {
     updateVaccineDto: UpdateVaccineDto,
     file: Express.Multer.File,
   ) {
-    // TODO: Add feature to update new image. But How can we ensure that image hasn't already been uploaded.
     await this.findById(id);
 
-    let imageUrl = '';
-
+    let imageUrlAndHash = {};
     if (file) {
-      const res = await this.cloudinaryService.uploadImage(file);
-      imageUrl = res.url;
+      imageUrlAndHash = await this.uploadFileAndGetImageUrl(file);
     }
 
     return this.vaccineRepository.save({
       id,
       ...updateVaccineDto,
-      imageUrl,
+      ...imageUrlAndHash,
     });
+  }
+
+  /**
+   * Uploads a file to a cloud service and returns the URL of the uploaded file.
+   *
+   * @param {Express.Multer.File} file - The file to upload.
+   * @return {Promise<string>} A promise that resolves to the URL of the uploaded file.
+   */
+  private async uploadFileAndGetImageUrl(file: Express.Multer.File): Promise<{
+    imageUrl: Vaccine['imageUrl'];
+    imageHash: Vaccine['imageHash'];
+  }> {
+    let imageUrl;
+    let imageHash;
+
+    if (!file) {
+      return {
+        imageUrl,
+        imageHash,
+      };
+    }
+
+    // Get hash of the current file.
+    const fileHash = calculateHash(file);
+
+    // Check if this hash already exist in the table.
+    const vaccine = await this.vaccineRepository.findOneBy({
+      imageHash: fileHash,
+    });
+
+    if (vaccine) {
+      return {
+        imageUrl: vaccine.imageUrl,
+        imageHash: vaccine.imageHash,
+      };
+    }
+
+    // Otherwise upload to cloudinary
+    const res = await this.cloudinaryService.uploadImage(file);
+
+    return { imageUrl: res.url, imageHash: fileHash };
   }
 
   /**

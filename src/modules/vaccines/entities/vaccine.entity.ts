@@ -47,6 +47,9 @@ export class Vaccine extends AuditEntity {
   @IsUrl()
   imageUrl?: string;
 
+  @Column({ nullable: true })
+  imageHash?: string;
+
   @Column('text', { array: true, default: [] })
   allergies: string[];
 }
