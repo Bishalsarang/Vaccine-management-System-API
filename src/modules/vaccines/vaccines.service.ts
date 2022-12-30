@@ -136,12 +136,12 @@ export class VaccineService {
    */
   async getAllergiesCount() {
     const response = await this.vaccineRepository
-      .query(`SELECT UPPER(allergy) as name, COUNT(*)::integer
+      .query(`SELECT LOWER(allergy) as name, COUNT(*)::integer
               FROM (
                  SELECT unnest(allergies) as allergy
                   FROM core.vaccines
                ) t
-            GROUP BY UPPER(allergy)`);
+            GROUP BY LOWER(allergy)`);
 
     return response;
   }
