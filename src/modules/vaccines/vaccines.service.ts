@@ -83,13 +83,25 @@ export class VaccineService {
    * @param updateVaccineDto - The data for updating the vaccine.
    * @returns The updated vaccine.
    */
-  async update(id: number, updateVaccineDto: UpdateVaccineDto) {
+  async update(
+    id: number,
+    updateVaccineDto: UpdateVaccineDto,
+    file: Express.Multer.File,
+  ) {
     // TODO: Add feature to update new image. But How can we ensure that image hasn't already been uploaded.
     await this.findById(id);
+
+    let imageUrl = '';
+
+    if (file) {
+      const res = await this.cloudinaryService.uploadImage(file);
+      imageUrl = res.url;
+    }
 
     return this.vaccineRepository.save({
       id,
       ...updateVaccineDto,
+      imageUrl,
     });
   }
 

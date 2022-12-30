@@ -73,8 +73,12 @@ export class VaccineController {
   @ApiBody({ type: UpdateVaccineDto })
   @ApiParam({ name: 'id', type: Number })
   @ApiResponse({ status: HttpStatus.OK, type: Vaccine })
-  update(@Param('id') id: string, @Body() updateVaccineDto: UpdateVaccineDto) {
-    return this.vaccineService.update(+id, updateVaccineDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateVaccineDto: UpdateVaccineDto,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    return this.vaccineService.update(+id, updateVaccineDto, image);
   }
 
   /**
