@@ -1,6 +1,7 @@
 import dataSourceConfig from './config/typorm.common.config';
 
 import { Module } from '@nestjs/common';
+import { APP_FILTER } from '@nestjs/core';
 import { LoggerModule } from 'nestjs-pino';
 import { MulterModule } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
@@ -16,6 +17,7 @@ import { UsersModule } from './modules/users/users.module';
 import { VaccinesModule } from './modules/vaccines/vaccines.module';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { CloudinaryService } from './modules/cloudinary/cloudinary.service';
+import { CentralExceptionFilter } from './filter/exception.filter';
 
 @Module({
   imports: [
@@ -46,6 +48,13 @@ import { CloudinaryService } from './modules/cloudinary/cloudinary.service';
     CloudinaryModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CloudinaryService],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: CentralExceptionFilter,
+    },
+    AppService,
+    CloudinaryService,
+  ],
 })
 export class AppModule {}

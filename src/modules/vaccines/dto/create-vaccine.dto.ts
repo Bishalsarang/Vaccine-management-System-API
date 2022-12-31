@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import {
+  Min,
   IsIn,
   IsString,
   IsNumber,
@@ -47,6 +48,7 @@ export class CreateVaccineDto {
     description: 'The number of doses for the vaccine.',
   })
   @IsNumber()
+  @Min(1)
   // If we use multiform data with interceptor @UseInterceptors(FileInterceptor())
   // values are converted to string. So we use Type form class-validator
   @Type(() => Number)

@@ -8,6 +8,7 @@ import {
   UseGuards,
   Controller,
   HttpStatus,
+  UseFilters,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -32,14 +33,16 @@ import { UpdateVaccineDto } from './dto/update-vaccine.dto';
 import { AuthGuard } from '../..//guard/auth/auth.guard';
 import { FieldCountWrapper } from './dto/vaccine-stage-count.dto';
 import { FileValidatorPipe } from '../../pipe/file.validator';
+import { CentralExceptionFilter } from '../../filter/exception.filter';
 
 /**
  * Controller for managing vaccines.
  */
 @ApiTags('Vaccines')
-@Controller('vaccines')
 @UseGuards(AuthGuard)
+@Controller('vaccines')
 @ApiBearerAuth('Bearer')
+@UseFilters(new CentralExceptionFilter())
 export class VaccineController {
   constructor(private readonly vaccineService: VaccineService) {}
 

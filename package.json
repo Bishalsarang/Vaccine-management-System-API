@@ -26,6 +26,7 @@
     "migration:revert": "yarn typeorm --dataSource=src/config/typeorm.datasource.ts migration:revert"
   },
   "dependencies": {
+    "@drdgvhbh/postgres-error-codes": "^0.0.6",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",

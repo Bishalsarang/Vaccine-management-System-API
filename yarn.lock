@@ -358,6 +358,11 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
+"@drdgvhbh/postgres-error-codes@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@drdgvhbh/postgres-error-codes/-/postgres-error-codes-0.0.6.tgz#ff1c6258771894c5c7662495531c38b46e1cc037"
+  integrity sha512-tAz0Xp+qhq90x0r/3VW96iRdHFw72cYQqXa65u0eFVhSMC27bc2gZ8Ky5WXEmshrl/bCe7QTYBNEF0U5zeSQjw==
+
 "@eslint/eslintrc@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.4.0.tgz#8ec64e0df3e7a1971ee1ff5158da87389f167a63"

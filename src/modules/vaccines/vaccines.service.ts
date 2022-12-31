@@ -1,5 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 
 import { Repository, UpdateResult } from 'typeorm';
 
@@ -31,6 +35,17 @@ export class VaccineService {
     createVaccineDto: CreateVaccineDto,
     file: Express.Multer.File,
   ): Promise<Vaccine> {
+    const vaccineName = createVaccineDto.name;
+    const doesVaccineAlreadyExist = await this.vaccineRepository.countBy({
+      name: vaccineName,
+    });
+
+    if (doesVaccineAlreadyExist) {
+      throw new BadRequestException(
+        'The vaccine with name ' + vaccineName + ' alreadye exists',
+      );
+    }
+
     const imageUrlAndHash = await this.uploadFileAndGetImageUrl(file);
 
     return this.vaccineRepository.save({
