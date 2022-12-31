@@ -1,3 +1,5 @@
+import dataSourceConfig from './config/typorm.common.config';
+
 import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
 import { MulterModule } from '@nestjs/platform-express';
@@ -7,7 +9,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { join } from 'path';
-
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
 
@@ -26,19 +27,7 @@ import { CloudinaryService } from './modules/cloudinary/cloudinary.service';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: any) => ({
-        type: 'postgres',
-        host: configService.get('DB_HOST'),
-        port: +configService.get('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_DATABASE'),
-        schema: configService.get('DB_SCHEMA'),
-        // TODO: Manage this by migration
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true,
-        validation: true,
-      }),
+      useFactory: () => ({ ...dataSourceConfig }),
     }),
     LoggerModule.forRoot({
       pinoHttp: {
