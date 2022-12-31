@@ -3,7 +3,7 @@ import { User } from '../modules/users/entities/users.entity';
 import { Seeder } from 'typeorm-seeding';
 import { generatePasswordHash } from '../utils/auth.utils';
 
-export default class DatabaseSeeder implements Seeder {
+export default class UserSeeder implements Seeder {
   public async run(_: any, connection: Connection): Promise<void> {
     const UserData = {
       lastname: 'Doe',
