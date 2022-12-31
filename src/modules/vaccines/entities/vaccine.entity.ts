@@ -18,7 +18,7 @@ export class Vaccine extends AuditEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   @IsNotEmpty()
   @MaxLength(255)
   name: string;
@@ -30,7 +30,7 @@ export class Vaccine extends AuditEntity {
   @Min(1)
   numberOfDoses: number;
 
-  @Column()
+  @Column({ default: VACCINE_STAGES.research })
   @IsNotEmpty()
   @IsIn(Object.values(VACCINE_STAGES))
   stage: string;
