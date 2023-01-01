@@ -1,60 +1,95 @@
-# Vaccine Management System Backend
 
-A backend API for a vaccine management system, built with [NestJS](https://nestjs.com/) and [Postgres](https://www.postgresql.org/).
+
+# Vaccine Management System Backend
+A backend API for a vaccine management system, built with NestJS, TypeORM and Postgres.
+
 
 ## Tech Stack
+- NestJs
+- TypeORM
+- Postgres
+- Jest
 
--   [NestJS](https://nestjs.com/) 
--   [TypeOrm](https://typeorm.io/)
--   [Postgres](https://www.postgresql.org/)
 
-## Installation
 
-1.  Clone the repository and navigate to the project directory:
 
-`git clone https://github.com/Bishalsarang/Vaccine-management-System-API` 
+## Environment Variables
 
-2.  Install the dependencies:
-`yarn` 
+To run this project, you will need to add the following environment variables to your `.env` file
 
-3.  Create a `.env` file in the root directory and set the following environment variables from `.env.example`
+```
+APP_HOST=localhost
 
-4.  Start the development server:
+# Database settings
+DB_TYPE=postgres
+DB_HOST=localhost
+DB_PORT=54323
+DB_USERNAME=admin 
+DB_PASSWORD=admin
+DB_DATABASE=vaccine_management
+DB_SCHEMA=core
 
-`yarn start:dev` 
+#JWT and HASH
+SALT_ROUNDS = 10;
+SECRET_KEY = secret;
 
-The API will be available at [http://localhost:3000/api/v1](http://localhost:3000/api/v1).
+# Cloudinary API KEYS for Image Upload
+CLOUDINARY_ENV_NAME = XXXXX
+CLOUDINARY_API_KEY = XXXXXXXX
+CLOUDINARY_API_SECRET = XXXXXXXXX
+```
+## Running Locally For the First Time
 
-## Swagger Documentation
+- Clone the project
 
-You can find the REST API documentation at [http://localhost:3000/swagger-ui](http://localhost:3000/swagger-ui).
+```bash
+git clone https://github.com/Bishalsarang/Vaccine-management-System-API
+```
 
-## License
+- Go to the project directory
 
-This project is licensed under the MIT License. See the [LICENSE](https://chat.openai.com/chat/LICENSE) file for details.
+```bash
+  cd vaccine-management-system-api
+```
 
-## TODO
+- Install dependencies
 
- - [x]  Add prettier, eslint and husky for formatting, fixing errors and pre-commit and pre-push hooks
- - [x] Configure swagger doc
- - [x] Containerize the application
- - [x] Add `docker-compose` service for running the application and the database
- - [x] Add `pico logger` to log all the requests
- - [x] Setup the database connections
- - [x] Add controller, service, entity and repository for `VaccineEntity`
- - [x] Write unit test for Vaccine Services
- - [] Fix issue with the patch /vaccines as it throws error since all fields are required.
- - [x] Add controller, service, entity and repository for `UserEntity`
- - [x] Implement login and signup flow with JWT authentication
- - [x] Add auth guard to make the route private
- - [x] Skip unknown properties being sent in the payload other than defined in DTOs
- - [x] Add route to get the access token from a refresh token
- - [ ] Add seeders and migration scripts
- - [ ] Add updatedBy, createdBy, deletedBy information in Vaccine
- - [ ] Implement authorization. Only allow admin for CRUD. But for normal user only allow to view
- - [ ] Ability to upload the vaccine image
- - [ ] Update the readme to run the development server, setup the database, run the application
- - [ ] Write unit test for utils
- - [ ] Write the test using the test databse
- - [ ] Refactoring and cleanup: constants, configs, duplicates
- - [ ] Host to free deployment service like heroku
+```bash
+  yarn
+```
+- Run the database service from `docker-compose.yml`
+
+```bash
+   docker-compose up db
+```
+The docker servicer automatically creates the database withd efault credentials and the database and thes chema.
+You can connect to database using the following db configuration
+```
+# Database settings
+
+DB_TYPE=postgres
+DB_HOST=localhost
+DB_PORT=54323
+DB_USERNAME=admin 
+DB_PASSWORD=admin
+DB_DATABASE=vaccine_management
+DB_SCHEMA=core
+```
+- Create a `.env` file in the root directory and set the following environment variables from `.env.example`
+
+- Run the migrations which creates the necessary entities: `users` & `vaccines` table 
+```bash
+  yarn migration:run
+```
+
+- Seed the database
+ ```bash
+   yarn db:seed
+```
+
+- Start the development server
+
+```bash
+  yarn start:dev
+```
+The API will be available at http://localhost:3000/api/v1.
