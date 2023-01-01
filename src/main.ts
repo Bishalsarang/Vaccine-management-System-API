@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
+import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { SecuritySchemeObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface';
@@ -9,6 +10,8 @@ import * as cors from 'cors';
 import { AppModule } from './app.module';
 import { SWAGGER } from './constant/lang.constant';
 import { SWAGGER_URL, URL_PREFIX } from './constant/base.constant';
+
+const configService = new ConfigService();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -28,7 +31,7 @@ async function bootstrap() {
   // want to cast if possible
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
-  await app.listen(process.env.PORT || 3003);
+  await app.listen(configService.get<number>('PORT', 3003));
 }
 
 /**

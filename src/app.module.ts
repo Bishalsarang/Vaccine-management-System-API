@@ -19,6 +19,8 @@ import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { CloudinaryService } from './modules/cloudinary/cloudinary.service';
 import { CentralExceptionFilter } from './filter/exception.filter';
 
+const configService = new ConfigService();
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -33,9 +35,10 @@ import { CentralExceptionFilter } from './filter/exception.filter';
     }),
     LoggerModule.forRoot({
       pinoHttp: {
-        level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
+        level:
+          configService.get('NODE_ENV') !== 'production' ? 'debug' : 'info',
         transport:
-          process.env.NODE_ENV !== 'production'
+          configService.get('NODE_ENV') !== 'production'
             ? { target: 'pino-pretty' }
             : undefined,
       },

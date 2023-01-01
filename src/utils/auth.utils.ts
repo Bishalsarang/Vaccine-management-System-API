@@ -1,4 +1,7 @@
+import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
+
+const configService = new ConfigService();
 
 /**
  * Generate hashedPassword from plainPassword.
@@ -10,7 +13,7 @@ export async function generatePasswordHash(
 ): Promise<string> {
   const hashedPassword = await bcrypt.hash(
     plainPassword,
-    parseInt(process.env.SALT_ROUNDS as string, 10) || 10,
+    parseInt(configService.get('SALT_ROUNDS', '10')),
   );
 
   return hashedPassword;
