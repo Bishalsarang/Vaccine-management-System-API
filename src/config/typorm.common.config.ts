@@ -23,7 +23,7 @@ const dataSourceConfig: DataSourceWithSeederOptions = {
   migrationsTableName: 'changelog',
   migrations: ['dist/migrations/*.js'],
   entities: ['dist/modules/**/*.entity.js'],
-  seeds: ['dist/seeds/**/*{seed.ts,.js}'],
+  seeds: ['dist/seeds/**/*.seed.js'],
 };
 
 export default dataSourceConfig;

@@ -1,7 +1,7 @@
 import { Connection } from 'typeorm';
 import { Seeder } from 'typeorm-seeding';
 
-import { vaccinesData } from './data/vaccines.seed.data';
+import { vaccinesData } from './data/vaccines.data';
 
 import { Vaccine } from './../modules/vaccines/entities/vaccine.entity';
 
