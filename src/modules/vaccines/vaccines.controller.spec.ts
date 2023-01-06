@@ -1,4 +1,3 @@
-import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
@@ -9,7 +8,7 @@ import { VaccineController } from './vaccines.controller';
 import { Vaccine } from './entities/vaccine.entity';
 
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
-import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 describe('VaccinesController', () => {
   let vaccineController: VaccineController;
@@ -20,11 +19,15 @@ describe('VaccinesController', () => {
       providers: [
         VaccineService,
         JwtService,
-        CloudinaryService,
-        ConfigService,
         {
           provide: getRepositoryToken(Vaccine),
           useClass: Repository,
+        },
+        {
+          provide: CloudinaryService,
+          useValue: {
+            uploadImage: jest.fn(),
+          },
         },
       ],
     }).compile();

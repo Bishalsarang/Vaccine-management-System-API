@@ -1,27 +1,33 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CloudinaryService } from '../../../modules/cloudinary/cloudinary.service';
-
 import { Repository } from 'typeorm';
+
+import { CloudinaryService } from '../../../modules/cloudinary/cloudinary.service';
 
 import { Vaccine } from '../entities/vaccine.entity';
 import { VaccineService } from '../vaccines.service';
-import { ConfigService } from '@nestjs/config';
 
 export async function setup() {
   const module: TestingModule = await Test.createTestingModule({
     providers: [
-      ConfigService,
-      VaccineService,
-      CloudinaryService,
       {
         provide: getRepositoryToken(Vaccine),
         useClass: Repository,
       },
+
+      {
+        provide: CloudinaryService,
+        useValue: {
+          configService: jest.fn(),
+          uploadImage: jest.fn(),
+        },
+      },
+      VaccineService,
     ],
   }).compile();
 
   return {
+    cloudinaryService: module.get<CloudinaryService>(CloudinaryService),
     vaccineService: module.get<VaccineService>(VaccineService),
     vaccineRepository: module.get<Repository<Vaccine>>(
       getRepositoryToken(Vaccine),

@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CloudinaryService } from './cloudinary.service';
 
@@ -6,7 +7,7 @@ describe('CloudinaryService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CloudinaryService],
+      providers: [CloudinaryService, ConfigService],
     }).compile();
 
     service = module.get<CloudinaryService>(CloudinaryService);
